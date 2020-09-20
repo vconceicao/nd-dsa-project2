@@ -83,7 +83,7 @@ def intersection(llist_1, llist_2):
 
 
 # Test case 
-def test_function1(linked_list_1, linked_list_2, expected_union_result,expected_intersection_result):
+def test_function(linked_list_1, linked_list_2, expected_union_result,expected_intersection_result, test_compare):
 
     
     union_result = union(linked_list_1,linked_list_2)
@@ -96,37 +96,10 @@ def test_function1(linked_list_1, linked_list_2, expected_union_result,expected_
     print ("Union Result: {}".format(union_result)) 
     print ("Intersection Result: {}".format(intersection_result)) 
 
-    is_union_result_correct = union_result.to_set()==expected_union_result.to_set()
-    is_intersection_result_correct = intersection_result.to_set() == expected_intersection_result.to_set()
+    is_union_result_correct = test_compare(union_result,expected_union_result)
+    is_intersection_result_correct = test_compare(intersection_result,expected_intersection_result)
     print("Test Case: Pass" if is_union_result_correct and is_intersection_result_correct else "Test Case: Fail")
     print()
-  
-    
-
-def test_function2(linked_list_1,linked_list_2, expected_union_result, expected_intersection_result ):
-     #Function create for None cases
-
-  
-  
-    union_result = union(linked_list_1,linked_list_2)
-    intersection_result = intersection(linked_list_1, linked_list_2)
-
-  
-
-
-     
-    print("Linked List 1:  {}".format(linked_list_1))
-    print("Linked List 2:  {}".format(linked_list_2))
-    print ("Union Result: {}".format(union_result)) # expected result: None
-    print ("Intersection Result: {}".format(intersection_result)) #expected result: None
-
-    is_union_result_correct = union_result ==expected_union_result
-    is_intersection_result_correct = intersection_result == expected_intersection_result
-    print("Test Case 3: Pass" if is_union_result_correct and is_intersection_result_correct else "Test Case 3: Fail")
-    print()
-
-
-
 
 element_1 = [3,2,4,35,6,65,6,4,3,21]
 linked_list_1 = LinkedList()
@@ -151,8 +124,8 @@ for i in expected_union_list:
 for i in expected_intersection_list:
     expected_intersection_result.append(i)   
     
-
-test_function1(linked_list_1, linked_list_2, expected_union_result, expected_intersection_result)
+test_compare = lambda a,b : a.to_set() == b.to_set()
+test_function(linked_list_1, linked_list_2, expected_union_result, expected_intersection_result, test_compare)
 # Union Result: 32 -> 65 -> 2 -> 35 -> 3 -> 4 -> 6 -> 1 -> 9 -> 11 -> 21 ->
 # Intersection Result: 4 -> 21 -> 6 ->
 
@@ -164,7 +137,8 @@ linked_list_2.append(5)
 expected_union_result = LinkedList()
 expected_intersection_result = LinkedList()
 expected_union_result.append(5)
-test_function1(linked_list_1, linked_list_2, expected_union_result, expected_intersection_result)
+test_compare = lambda a,b : a.to_set() == b.to_set()
+test_function(linked_list_1, linked_list_2, expected_union_result, expected_intersection_result, test_compare)
 # Union Result: 5 ->
 # Intersection Result:
 
@@ -172,6 +146,7 @@ none_linked_list_1 = None
 none_linked_list_2 = None
 expected_none_union_result = None
 expected_none_intersection_result = None
-test_function2(none_linked_list_1, none_linked_list_2, expected_none_union_result, expected_none_intersection_result)
+test_compare = lambda a,b : a == b
+test_function(none_linked_list_1, none_linked_list_2, expected_none_union_result, expected_none_intersection_result, test_compare)
 # Union Result: None
 # Intersection Result: None
