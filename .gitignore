@@ -127,3 +127,6 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+set_training.py
+test-problem-6.py
+.vscode/settings.json

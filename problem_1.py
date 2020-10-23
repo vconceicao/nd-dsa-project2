@@ -21,7 +21,8 @@ class LRU_Cache(object):
         
     def get(self, key):
         # Retrieve item from provided key. Return -1 if nonexistent. 
-        assert key is not None
+        if key is None:
+            return None
         
         value = self.hash_table.get(key, -1)
         
@@ -37,6 +38,9 @@ class LRU_Cache(object):
 
     def set(self, key, value):
         # Set the value if the key is not present in the cache. If the cache is at capacity remove the oldest item. 
+        if key is None:
+            return None
+
         if self.get(key) == -1:
             self.add_value( key, value)
 
@@ -362,17 +366,17 @@ def test_adding_a_none_value_into_the_cache():
 
     our_cache.set(None, None)
 
-    cache_hit = our_cache.get(1)
+    cache_miss = our_cache.get(1)
 
     result = ''
 
 
-    if cache_hit.value ==1 and our_cache.head.value == 1 and our_cache.tail.value ==2:
+    if cache_miss==-1:
         result = "Pass"
     else:
         result = "Fail"
 
-    print("test_cache_hit_getting_the_last_node_in_the_list {}".format(result))
+    print("test_adding_a_none_value_into_the_cache {}".format(result))
                
     
 test_add_one_value_to_empty_cache()
