@@ -11,7 +11,6 @@ class Node:
 class LRU_Cache(object):
 
     def __init__(self, capacity):
-        # Initialize class variables
         self.capacity = capacity
         self.num_entries = 0
         self.hash_table = {}
@@ -20,7 +19,6 @@ class LRU_Cache(object):
 
         
     def get(self, key):
-        # Retrieve item from provided key. Return -1 if nonexistent. 
         if key is None:
             return None
         
@@ -37,7 +35,6 @@ class LRU_Cache(object):
         return value
 
     def set(self, key, value):
-        # Set the value if the key is not present in the cache. If the cache is at capacity remove the oldest item. 
         if key is None:
             return None
 
@@ -380,17 +377,30 @@ def test_adding_a_none_value_into_the_cache():
                
     
 test_add_one_value_to_empty_cache()
+#cache_hit.value ==1 and our_cache.size() == 1 and our_cache.head.value == 1 and our_cache.tail.value==1:
 test_add_one_value_to_filled_cache()
+# cache_hit.value ==2 and our_cache.size() == 2 and our_cache.head.value == 2 and our_cache.tail.value==1:
 test_add_one_value_to_full_cache()
+# our_cache.size() == 3 and our_cache.head.value == 4 and our_cache.tail.value==2:
 test_updating_tail_value_in_cache()
+#our_cache.size() == 3 and our_cache.head.key == 1 and our_cache.head.value == 7 and our_cache.tail.key == 2 :
 test_updating_node_value_in_cache()
+# our_cache.size() == 3 and our_cache.head.key == 3 and our_cache.head.value == 7 and our_cache.tail.key == 1 :
 test_updating_node_value_in_cache_with_one_entry()
+# our_cache.size() == 1 and our_cache.head.key == 1 and our_cache.head.value == 2 and our_cache.tail.key == 1 :
 test_cache_miss()
+# our_cache.size() == 1 and cache_miss == -1 :
 test_cache_hit_one_entry()
+# cache_hit.value ==1:
 test_cache_hit_getting_node_at_middle_of_chain()
+# cache_hit.value ==2 and our_cache.head.value == 2 and our_cache.tail.value ==1:
 test_cache_hit_getting_node_at_middle_of_chain_with_4_entries()
+# cache_hit.value ==2 and our_cache.head.value == 2 and our_cache.tail.value ==1:
 test_cache_hit_getting_the_last_node_in_the_list()   
+# cache_hit.value ==1 and our_cache.head.value == 1 and our_cache.tail.value ==2:
 test_adding_a_none_value_into_the_cache()
+# cache_miss==-1:
+
 
     
     

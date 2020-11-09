@@ -100,7 +100,12 @@ def test_find_files_with_none_suffix():
     print("test_find_files_with_none_suffix {}".format(result))
 
 test_find_all_files_with_c_suffix()
+# ['t1.c', 'a.c', 'a.c', 'b.c']
 test_find_all_files_with_h_suffix()
+#  ['t1.h', 'a.h', 'a.h', 'b.h']
 test_find_all_files_with_h_suffix_insubdir()
+# ['a.h']
 test_find_files_with_none_dir()
+# []
 test_find_files_with_none_suffix()
+# []
