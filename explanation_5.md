@@ -7,4 +7,4 @@ I created a class called **Blockchain** to model the problem by following the im
 Because the **Blockchain** class has an attribute called **tail_block** that holds the last added block, all addition of a new block that is made by the append function is **O(1)** in the worst cases.
 
 ### Space Complexity:
-The **append** function creates a new block from the data sent by a parameter that is **O(1)** in the worst cases.
+The **append** function creates a new block from the data sent by a parameter that is **O(1)**. However as we add more blocks space taken grows that giving it **O(n)** at the space complexity.  
