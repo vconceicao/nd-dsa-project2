@@ -37,6 +37,8 @@ class LRU_Cache(object):
     def set(self, key, value):
         if key is None:
             return None
+        if self.capacity < 1:
+            return 
 
         if self.get(key) == -1:
             self.add_value( key, value)
@@ -374,6 +376,24 @@ def test_adding_a_none_value_into_the_cache():
         result = "Fail"
 
     print("test_adding_a_none_value_into_the_cache {}".format(result))
+
+def test_adding_a_value_into_the_cache_zero_capacity():
+
+    our_cache = LRU_Cache(0)
+
+    our_cache.set(1, 1)
+
+    cache_miss = our_cache.get(1)
+
+    result = ''
+
+
+    if cache_miss==-1:
+        result = "Pass"
+    else:
+        result = "Fail"
+
+    print("test_adding_a_value_into_the_cache_zero_capacity {}".format(result))
                
     
 test_add_one_value_to_empty_cache()
@@ -400,6 +420,7 @@ test_cache_hit_getting_the_last_node_in_the_list()
 # cache_hit.value ==1 and our_cache.head.value == 1 and our_cache.tail.value ==2:
 test_adding_a_none_value_into_the_cache()
 # cache_miss==-1:
+test_adding_a_value_into_the_cache_zero_capacity()
 
 
     

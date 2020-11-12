@@ -10,7 +10,7 @@ Abstractions/Classes created:
 
 
 ### Time Complexity:
-Encoding - It envolves creation of the frequency table that takes O(n), huffman_tree building takes O(log n) and the functions fill frequency table and generate encoded data leads to O(n) as it gets huffman code from frequency table.
+Encoding - It envolves creation of the frequency table that takes O(n), huffman_tree building takes O(log n) and the functions fill frequency table and generate encoded data leads to O(n) as it gets huffman code from frequency table. At end calculating everything, the time complexity will take O(n log n)
 
 Decoding - It traverses the huffman tree as it pops each an element from the data stack and fill the decoded message array. The solution leads to O(n)
 
