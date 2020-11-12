@@ -8,10 +8,10 @@ class Node:
         self.left = None
         self.right = None
         self.huffman_code = None
-    
+
     def __eq__(self, other):
         return self.frequency == other.frequency
-    
+
     def __lt__(self, other):
         return self.frequency < other.frequency
 
@@ -34,10 +34,10 @@ class FrequencyTable:
 
     def add_element(self, char):
         self.table[char] = Node(char, 1)
-    
+
     def get(self, char):
         return self.table.get(char)
-    
+
     def __iter__(self):
         return iter(sorted(self.table.values(), key=lambda item: (item.frequency)))
 
@@ -60,31 +60,25 @@ class MinHeap:
         self.Heap[0] = Node('', -1 * sys.maxsize)
         self.FRONT = 1
 
-
     def __len__(self):
         return self.size
-  
-    
-    
+
     def parent(self, pos):
         return pos//2
-   
-    
+
     def left_child(self, pos):
         return 2 * pos
-   
-    
+
     def right_child(self, pos):
         return (2 * pos) + 1
 
-    
     def get_root(self):
         return self.Heap[self.FRONT]
 
     def set_root(self, value):
         self.Heap[self.FRONT] = value
-    
-    def is_leaf(self, pos): 
+
+    def is_leaf(self, pos):
             return not(self.has_left_child(pos) or self.has_right_child(pos))
 
     def has_right_child(self, pos):
@@ -93,32 +87,23 @@ class MinHeap:
     def has_left_child(self, pos):
         return self.left_child(pos) <= self.size
 
-    
     def swap(self, fpos, spos):
         self.Heap[fpos], self.Heap[spos] = self.Heap[spos], self.Heap[fpos]
 
-    
     def min_heapify(self, pos):
 
-        
-        
         if not self.is_leaf(pos):
             if (self.Heap[pos] > self.Heap[self.left_child(pos)] or
                     self.Heap[pos] > self.Heap[self.right_child(pos)]):
 
-                
-                
                 if self.Heap[self.left_child(pos)] < self.Heap[self.right_child(pos)]:
                     self.swap(pos, self.left_child(pos))
                     self.min_heapify(self.left_child(pos))
 
-                
-                
                 else:
                     self.swap(pos, self.right_child(pos))
                     self.min_heapify(self.right_child(pos))
 
-    
     def insert(self, element):
         if self.size >= self.max_size:
             return
@@ -126,23 +111,16 @@ class MinHeap:
         self.Heap[self.size] = element
 
         current = self.size
-        
-      
 
         while self.Heap[current] < self.Heap[self.parent(current)]:
             self.swap(current, self.parent(current))
             current = self.parent(current)
-            
 
-    
-    
     def minHeap(self):
 
         for pos in range(self.size//2, 0, -1):
             self.min_heapify(pos)
 
-    
-    
     def remove(self):
 
         popped = self.get_root()
@@ -150,14 +128,12 @@ class MinHeap:
         self.size -= 1
         self.min_heapify(self.FRONT)
         return popped
-    
-    def __repr__(self):
-        object_representation= ""
-        for i in self.Heap:
-            object_representation+="{} \n".format(i)
-        return object_representation
 
-    
+    def __repr__(self):
+        object_representation = ""
+        for i in self.Heap:
+            object_representation += "{} \n".format(i)
+        return object_representation
 
 
 def create_frequency_table(message):
@@ -169,7 +145,7 @@ def create_frequency_table(message):
             frequency_table.update_element_count(char)
         else:
             frequency_table.add_element(char)
- 
+
     return frequency_table
 
 
@@ -180,6 +156,7 @@ def create_min_heap(frequency_table):
         min_heap.insert(node)
 
     return min_heap
+
 
 def remove_two_nodes(min_heap):
 
@@ -199,6 +176,7 @@ def create_huffman_node(n1, n2):
     huffman_node.right = n2
     return huffman_node
 
+
 def build_huffman_tree(min_heap):
     while len(min_heap) > 1:
         node1, node2 = remove_two_nodes(min_heap)
@@ -212,86 +190,87 @@ def fill_frequency_table(frequency_table, huffman_tree):
     stack = []
 
     def traverse(node, byte):
-    
-        if node:
 
-            if byte is not None:
-                stack.append(str(byte))
-                if node.value is not None and node.value!='':
-                    frequency_table.get(node.value).huffman_code = "".join(stack)
-        
-       
-        
+        if node:
+            stack.append(str(byte))
+            if node.value is not None and node.value != '':
+                frequency_table.get(node.value).huffman_code = "".join(stack)
+
             traverse(node.left, 0)
             traverse(node.right, 1)
-            if len(stack)>0:
+            if len(stack) > 0:
                 stack.pop()
 
-    traverse(node, None)
-
+    traverse(node, 0)
 
     return frequency_table
-
 
 
 def generate_encoded_data(frequency_table, data):
     encoded_data = ""
     for char in data:
-       
+
         char_byte_value = frequency_table.get(char).huffman_code
-        encoded_data+=char_byte_value
+        encoded_data += char_byte_value
     return encoded_data
 
- 
+
 def huffman_encoding(data):
 
     if data is None:
         print("Data must not be none\n")
         return "", None
-    
-    if len(data)==0:
+
+    if len(data) == 0:
         print("Data must not be empty\n")
         return "", None
 
     fqt = create_frequency_table(data)
     mh = create_min_heap(fqt)
     huffman_tree = build_huffman_tree(mh)
-    complete_fqt = fill_frequency_table(fqt,huffman_tree)
-    encoded_data = generate_encoded_data(complete_fqt,data)
+    complete_fqt = fill_frequency_table(fqt, huffman_tree)
+    encoded_data = generate_encoded_data(complete_fqt, data)
     return encoded_data, huffman_tree
+
 
 def huffman_decoding(data, tree):
 
     if data is None or tree is None:
         print("Data or Tree must not be None\n")
         return
-    
-    if len(data)==0 or len(tree) == 0:
+
+    if len(data) == 0 or len(tree) == 0:
         print("Data or Tree must not be empty\n")
         return
 
-    node = tree.Heap[1]
-    data_stack = list(data)
+    node = None
     decoded_data = []
-    data_stack.append('end')
-    
+    msg_list = list(data)
 
-    while len(data_stack)>0:
-        
-        byte = data_stack.pop(0)
-        
-        if node.value is not None and node.value!='':
-            decoded_data.append(node.value)
-            node = tree.Heap[1]
-        
-        if byte =='0':
-            node = node.left
+    i = 0
+
+    while i < len(msg_list)+1:
+
+        if node is not None:
+            if node.value != '':
+                decoded_data.append(node.value)
+                node = None
+                if i >= len(msg_list):
+                   break
+            
+
+       
+        if msg_list[i] == '0':
+            if node is None:
+                node = tree.Heap[1]
+            else:
+                node = node.left
         else:
             node = node.right
-        
-
-
-    return decoded_data
+        i+=1
+   
+    return "".join(decoded_data)
+    
 
 
 
@@ -301,45 +280,82 @@ if __name__ == "__main__":
     a_great_sentence = "The bird is the word"
 
     print ("The size of the data is: {}\n".format(sys.getsizeof(a_great_sentence)))
+    #The size of the data is: 69
     print ("The content of the data is: {}\n".format(a_great_sentence))
+    #The content of the data is: The bird is the word
 
     encoded_data, tree = huffman_encoding(a_great_sentence)
 
     print ("The size of the encoded data is: {}\n".format(sys.getsizeof(int(encoded_data, base=2))))
+    #The size of the encoded data is: 36
     print ("The content of the encoded data is: {}\n".format(encoded_data))
+    #The content of the encoded data is: 001000100000001100101101110001100010110011100010101100111110100000001100111100101000110001
 
     decoded_data = huffman_decoding(encoded_data, tree)
-    #0100100000110101111100110011101110010111011111100000110111101010011001
 
     print ("The size of the decoded data is: {}\n".format(sys.getsizeof(decoded_data)))
+    #The size of the decoded data is: 69
     print ("The content of the encoded data is: {}\n".format(decoded_data))
+    #The content of the encoded data is: The bird is the word
 
     an_empty_sentence = ""
 
     print ("The size of the data is: {}\n".format(sys.getsizeof(an_empty_sentence)))
+    # The size of the data is: 49
     print ("The content of the data is: {}\n".format(an_empty_sentence))
+    # The content of the data is: 
 
     encoded_data, tree = huffman_encoding(an_empty_sentence)
 
     print ("The content of the encoded data is: {}\n".format(encoded_data))
-
+    #Data must not be empty
+    #The content of the encoded data is:
     decoded_data = huffman_decoding(encoded_data, tree)
-    #
+     
 
     print ("The size of the decoded data is: {}\n".format(sys.getsizeof(decoded_data)))
+    #Data or Tree must not be None
+    #The size of the decoded data is: 16
     print ("The content of the encoded data is: {}\n".format(decoded_data))
+    #The content of the encoded data is: None
    
     a_none_sentence = None
 
     print ("The size of the data is: {}\n".format(sys.getsizeof(a_none_sentence)))
+    #The size of the data is: 16
     print ("The content of the data is: {}\n".format(a_none_sentence))
-    #''
+    #The content of the data is: None
 
     encoded_data, tree = huffman_encoding(a_none_sentence)
 
     print ("The content of the encoded data is: {}\n".format(encoded_data))
+    #Data must not be none
+    #The content of the encoded data is: 
+    decoded_data = huffman_decoding(encoded_data, tree)
+
+    print ("The size of the decoded data is: {}\n".format(sys.getsizeof(decoded_data)))
+    #Data or Tree must not be None
+    #The size of the decoded data is: 16
+    print ("The content of the encoded data is: {}\n".format(decoded_data))
+    #The content of the encoded data is: None
+
+    an_weird_sentence = 'aaaaaaaa'
+
+    print ("The size of the data is: {}\n".format(sys.getsizeof(an_weird_sentence)))
+    #The size of the data is: 57
+    print ("The content of the data is: {}\n".format(an_weird_sentence))
+    # The content of the data is: aaaaaaaa
+
+    encoded_data, tree = huffman_encoding(an_weird_sentence)
+    print ("The size of the encoded data is: {}\n".format(sys.getsizeof(int(encoded_data, base=2))))
+    #The size of the encoded data is: 24
+    print ("The content of the encoded data is: {}\n".format(encoded_data))
+    # The content of the encoded data is: 00000000
 
     decoded_data = huffman_decoding(encoded_data, tree)
 
     print ("The size of the decoded data is: {}\n".format(sys.getsizeof(decoded_data)))
+    #The size of the decoded data is: 57
     print ("The content of the encoded data is: {}\n".format(decoded_data))
+    #The size of the decoded data is: 57
+    

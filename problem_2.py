@@ -3,7 +3,14 @@ import os
 def find_files(suffix, path):
   
 
+    if path is None:
+        return []
+    if not is_directory(path):
+        return []
+
     directories = []
+
+    
     
     if path and suffix:
         directories.append(path)
@@ -13,7 +20,10 @@ def find_files(suffix, path):
     files = []
 
     while directories:
-        folder = directories.pop(0) + '/'
+
+        folder = os.path.join(directories.pop(0))
+
+
 
         folder_content = os.listdir(folder)
         for content in folder_content:
@@ -99,6 +109,19 @@ def test_find_files_with_none_suffix():
         
     print("test_find_files_with_none_suffix {}".format(result))
 
+def test_find_files_where_the_directory_path_should_be_path_of_a_file():
+    
+    result = find_files('.c', 'testdir/t1.c')
+
+    expected_result = []
+
+    if len(result)==0 and result == expected_result: 
+        result = "Pass"
+    else:
+        result = "Fail"
+        
+    print("test_find_files_where_the_directory_path_should_be_path_of_a_file {}".format(result))
+
 test_find_all_files_with_c_suffix()
 # ['t1.c', 'a.c', 'a.c', 'b.c']
 test_find_all_files_with_h_suffix()
@@ -108,4 +131,6 @@ test_find_all_files_with_h_suffix_insubdir()
 test_find_files_with_none_dir()
 # []
 test_find_files_with_none_suffix()
+# []
+test_find_files_where_the_directory_path_should_be_path_of_a_file()
 # []
